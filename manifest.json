@@ -8,12 +8,13 @@
     "48": "icon.png",
     "128": "icon.png"
   },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
   "action": {
-    "default_popup": "popup.html",
     "default_icon": {
       "16": "icon.png"
     }
-
   },
   "background": {
     "service_worker": "background.js"
@@ -21,6 +22,6 @@
   "permissions": [
     "notifications",
     "storage",
-    "alarms"
-    ]
+    "sidePanel"
+  ]
 }

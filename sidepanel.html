@@ -7,7 +7,6 @@
     body {
       font-family: sans-serif;
       padding: 10px;
-      width: 250px;
     }
     #titleInput {
       width: calc(100% - 20px);
@@ -25,8 +24,8 @@
       padding:10px;
     }
     #history {
-      max-height: 300px;
-      overflow: hidden;
+      max-height: calc(100% - 200px);
+      overflow-y: scroll;
     }
     #timerTitle {
       font-weight: bold;
@@ -39,6 +38,9 @@
       font-size: x-large;
       width: 100%;
       margin: 15px 0px;
+    }
+    #clearHistoryBtn {
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -64,6 +66,7 @@
   <button id="imageBtn">image</button>
   <button id="progressBtn">progress</button>
   <div id="history"></div>
-  <script src="popup.js"></script>
+  <button id="clearHistoryBtn">履歴をクリア</button>
+  <script src="sidepanel.js"></script>
 </body>
 </html>

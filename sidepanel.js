@@ -60,6 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, 1000);
 
+  // 履歴のクリア
+  document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+    chrome.runtime.sendMessage({ type: 'clearHistory' }, (response) => {
+      if (response.success) {
+        document.getElementById('history').innerHTML = "<h4>タイマー履歴</h4><div>履歴をクリアしました。</div>";
+      }
+    });
+  });
 
   titleInput.focus();
 

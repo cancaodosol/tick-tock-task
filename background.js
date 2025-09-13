@@ -65,4 +65,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     return true;
   }
+
+  if (message.type === 'clearHistory') {
+    chrome.storage.local.set({ history: [] }, () => {
+      sendResponse({ success: true });
+    });
+    return true; // Indicates async response
+  }
 });
+
+// Chromeの拡張機能のアイコンがクリックされたときに、サイドパネルを開くように。
+chrome.action.onClicked.addListener(() => {
+  chrome.windows.getCurrent({}, (window) => {
+    chrome.sidePanel.open({ windowId: window.id });
+  });
+});
+
