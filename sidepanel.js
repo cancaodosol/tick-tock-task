@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.runtime.sendMessage({ type: 'stopTimer' });
     timerTitleDiv.textContent = "";
     countdownDiv.textContent = "";
-    startBtn.style.display = 'inline';
     timerTitleDiv.style.display = 'inline';
     timeSelect.style.display = 'inline';
     stopBtn.style.display = 'none';
