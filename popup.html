@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Countdown Timer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 10px;
+      width: 250px;
+    }
+    #titleInput {
+      width: calc(100% - 20px);
+      padding: 5px;
+    }
+    #timeSelect {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    #timeSelect button {
+      width:31%;
+      padding:10px;
+    }
+    #history {
+      max-height: 300px;
+      overflow: hidden;
+    }
+    #timerTitle {
+      font-weight: bold;
+      font-size: xx-large;
+    }
+    #countdown {
+      font-size: xx-large;
+    }
+    #stopBtn {
+      font-size: x-large;
+      width: 100%;
+      margin: 15px 0px;
+    }
+  </style>
+</head>
+<body>
+  <h3>タイマーを設定</h3>
+  <input type="text" id="titleInput" placeholder="タイマーのタイトルを入力" />
+  <br>
+  <div id="timeSelect">
+    <button value="1">1分</button>
+    <button value="3">3分</button>
+    <button value="5">5分</button>
+    <button value="10">10分</button>
+    <button value="15">15分</button>
+    <button value="20">20分</button>
+  </div>
+  <div>
+    <div id="timerTitle"></div>
+    <div id="countdown"></div>
+    <button id="stopBtn" style="display:none;">停止</button>
+  </div>
+  <button id="basicBtn">basic</button>
+  <button id="listBtn">list</button>
+  <button id="imageBtn">image</button>
+  <button id="progressBtn">progress</button>
+  <div id="history"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
