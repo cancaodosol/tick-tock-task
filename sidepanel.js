@@ -12,13 +12,17 @@ document.addEventListener('DOMContentLoaded', () => {
     ele.addEventListener('click', () => {
       const minutes = parseInt(ele.value);
       const title = titleInput.value.trim();
-      chrome.runtime.sendMessage({ type: 'startTimer', minutes: minutes, title: title });
+      chrome.runtime.sendMessage({ type: 'startAlermTimer', minutes: minutes, title: title });
     });
   });
 
   // タイマー停止
   stopBtn.addEventListener('click', () => {
-    chrome.runtime.sendMessage({ type: 'stopTimer' });
+    const stopAlermBtns = document.querySelectorAll(".stopAlermName");
+    stopAlermBtns.forEach((btn) => {
+      const alermName = btn.getAttribute("alermName");
+      chrome.runtime.sendMessage({ type: 'stopAlermTimer', alermName: alermName, minutes: 0 });
+    });
     timerTitleDiv.textContent = "";
     countdownDiv.textContent = "";
     timerTitleDiv.style.display = 'inline';
@@ -28,16 +32,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // タイマー状態を定期的に取得
   setInterval(() => {
-    chrome.runtime.sendMessage({ type: 'getRemainingTime' }, (response) => {
-      if (!response) return;
-      if (response.remainingSeconds > 0) {
-        const min = Math.floor(response.remainingSeconds / 60);
-        const sec = response.remainingSeconds % 60;
-        timerTitleDiv.textContent = `${response.title}`;
-        countdownDiv.textContent = `残り ${min}分 ${sec}秒`;
+    chrome.alarms.getAll().then((alarms) => {
+      if (!alarms) return;
+      if (alarms.length > 0) {
         titleInput.style.display = 'none';
         timeSelect.style.display = 'none';
         stopBtn.style.display = 'inline';
+
+        let countdownDivHtml = "<div>";
+        alarms.forEach((alarm) => {
+          const words = alarm.name.split("___");
+          const startDate = new Date(Number(words[1]));
+          const endDate = new Date(alarm.scheduledTime);
+          const title = words[2];
+          const remainingSeconds = Math.floor((endDate - new Date()) / 1000);
+          const min = Math.floor(remainingSeconds / 60);
+          const sec = remainingSeconds % 60;
+
+          countdownDivHtml += "<div>";
+          countdownDivHtml += ` <strong>${title}</strong>`;
+          countdownDivHtml += ` <div>残り ${min}分 ${sec}秒</div>`;
+          countdownDivHtml += ` <input class="stopAlermName" alermName="${alarm.name}" hidden></input>`;
+          countdownDivHtml += "</div>";
+        });
+        countdownDivHtml += "</div>";
+        countdownDiv.innerHTML = countdownDivHtml;
       } else {
         timerTitleDiv.textContent = "";
         countdownDiv.textContent = "";
@@ -51,10 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get({ history: [] }, (data) => {
       historyDiv.innerHTML = "<h4>タイマー履歴</h4>";
       data.history.reverse().forEach(entry => {
-        const start = new Date(entry.start).toLocaleTimeString().substring(0, 5);
-        const end = new Date(entry.end).toLocaleTimeString().substring(0, 5);
+        const start = new Date(entry.start).toLocaleTimeString().substring(0, 4);
+        const end = new Date(entry.end).toLocaleTimeString().substring(0, 4);
         const title = entry.title || "";
-        historyDiv.innerHTML += `<div>${start} ～ ${end}：【${entry.minutes}分】${title}</div>`;
+        historyDiv.innerHTML += `<div>${start} ～ ${end} (${entry.minutes}分)：${title}</div>`;
       });
     });
   }, 1000);
@@ -72,13 +91,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ボタンテスト
   document.getElementById('basicBtn').addEventListener('click', () => {
-    chrome.notifications.create({
+    chrome.notifications.create('test-notification', {
       type: "basic",
       iconUrl: "icon.png",
       title: "メッセージテスト",
       message: "リストです！！",
       contextMessage: "ちっちゃめのメッセージです！",
-      requireInteraction: true
+      requireInteraction: true,
+      buttons: [
+        { title: "延期" },
+        { title: "完了" }
+      ]
     });
   });
   document.getElementById('listBtn').addEventListener('click', () => {
@@ -104,6 +127,20 @@ document.addEventListener('DOMContentLoaded', () => {
       title: "メッセージテスト",
       message: "progressです！！",
       requireInteraction: true
+    });
+  });
+  document.getElementById('alermBtn').addEventListener('click', () => {
+    const title = titleInput.value.trim();
+    chrome.runtime.sendMessage({ type: 'startAlermTimer', minutes: 1, title: title });
+  });
+  document.getElementById('alermGetBtn').addEventListener('click', () => {
+    console.log('pushed alermGetBtn.');
+    chrome.alarms.getAll().then((alarms) => {
+      alarms.forEach((alarm) => {
+        const words = alarm.name.split("___");
+        console.log(alarm);
+        console.log((new Date(Number(words[1]))).toLocaleTimeString() + " ~ " + (new Date(alarm.scheduledTime)).toLocaleTimeString() + " : " + words[2]);
+      });
     });
   });
 });
