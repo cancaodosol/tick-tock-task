@@ -70,8 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.local.get({ history: [] }, (data) => {
       historyDiv.innerHTML = "<h4>タイマー履歴</h4>";
       data.history.reverse().forEach(entry => {
-        const start = new Date(entry.start).toLocaleTimeString().substring(0, 4);
-        const end = new Date(entry.end).toLocaleTimeString().substring(0, 4);
+        let start = new Date(entry.start).toLocaleTimeString();
+        start = start.substring(0, start.length - 3)
+        let end = new Date(entry.end).toLocaleTimeString();
+        end = end.substring(0, end.length - 3)
         const title = entry.title || "";
         historyDiv.innerHTML += `<div>${start} ～ ${end} (${entry.minutes}分)：${title}</div>`;
       });
