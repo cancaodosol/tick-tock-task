@@ -42,6 +42,30 @@
     #clearHistoryBtn {
       margin-top: 10px;
     }
+
+    #clock {    
+      margin: -16px 0;
+    }
+    #clock-container {
+      display: flex;
+      justify-content: center;
+    }
+    #currentTime {
+      display: flex;
+      align-items: baseline;
+    }
+    #currentTimeHourMinite {
+      font-size: 80px;
+    }
+    #currentTimeSecond {
+      font-size: 30px;
+    }
+    #currentDate {
+      justify-self: center;
+      margin-top: -18px;
+      background-color: white;
+      padding: 0 10px;
+    }
   </style>
 </head>
 <body>
@@ -61,6 +85,18 @@
     <div id="countdown"></div>
     <button id="stopBtn" style="display:none;">停止</button>
   </div>
+
+  <hr>
+  <div id="clock-container">
+    <div id="clock">
+      <div id="currentTime">
+        <div id="currentTimeHourMinite">10:02</div>
+        <div id="currentTimeSecond">56</div>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div id="currentDate">9/28(日)</div>
   <!-- <button id="basicBtn">basic</button>
   <button id="listBtn">list</button>
   <button id="imageBtn">image</button>

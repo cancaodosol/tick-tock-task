@@ -89,6 +89,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // 現在時刻の表示
+  function updateCurrentTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    document.getElementById('currentTimeHourMinite').textContent = `${hours}:${minutes}`;
+    document.getElementById('currentTimeSecond').textContent = seconds;
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const weekdayNames = ['日', '月', '火', '水', '木', '金', '土'];
+    const weekday = weekdayNames[now.getDay()];
+    document.getElementById('currentDate').textContent = `${month}/${day}(${weekday})`;
+  }
+  updateCurrentTime();
+  setInterval(updateCurrentTime, 1000);
+
   titleInput.focus();
 
   // ボタンテスト
