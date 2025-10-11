@@ -6,6 +6,11 @@ Chromeの拡張機能で実行されるタイマーアプリです。
 
 やることと時間を宣言して、タイマーをスタート。時間が来たら通知でお知らせします。
 
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/261a1eb5-5c19-4e4c-af6b-d668c38ec885" />
+<img width="300" alt="image" src="https://github.com/user-attachments/assets/0e6e89b2-6a60-4f1a-b563-4290b6795832" />
+
+&nbsp;
+
 ## セットアップ方法
 
 1. GitHubからソースコードをZipファイルでダウンロードしてください。
@@ -24,25 +29,23 @@ Chromeの拡張機能で実行されるタイマーアプリです。
 
 &nbsp;
 
-4. デベロッパーモードをオンにします。
+4. 「デベロッパーモード」をオンにします。
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/3023bef8-ae3b-4e2c-b99c-5a8d490804f1" />
 
 &nbsp;
 
-5. 「パッケージ化されていない拡張機能を読み込む」をクリックします。
+5. 「パッケージ化されていない拡張機能を読み込む」をクリックして、先ほど解凍したフォルダを選択します。
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/6030bf5b-11a7-47af-ab53-364c09603f68" />
 
-&nbsp;
-
-6. 先ほどダウンロードして解凍したフォルダを選択します。
+　　　　↓
 
 <img width="450" alt="image" src="https://github.com/user-attachments/assets/792f1e5e-5236-48f8-8509-b185688b2fb6" />
 
 &nbsp;
 
-7. すべての拡張機能に、「tick-tock-task」が追加されていたら、セットアップ完了です。
+6. すべての拡張機能に、「チクタクタスク」が追加されていたら、セットアップ完了です。
 
 <img width="600" alt="image" src="https://github.com/user-attachments/assets/f3a57021-6134-47cc-a0df-fa5f5c422bde" />
 
@@ -59,7 +62,7 @@ Chromeの拡張機能で実行されるタイマーアプリです。
 
 <img width="450" alt="image" src="https://github.com/user-attachments/assets/4e6a28e7-34c4-49be-bda3-d094034bddca" />
 
-「通知パネル」の通知が許可されていれば、OKです！
+👆「通知パネル」の通知が許可されていれば、OKです！
 
 &nbsp;
 &nbsp;
@@ -73,3 +76,11 @@ Chromeの拡張機能で実行されるタイマーアプリです。
 2. サイドバーに開かれますので、やることを宣言してご利用ください。
 
 <img width="300" alt="image" src="https://github.com/user-attachments/assets/7face701-3538-4619-977e-25a1d901833f" />
+
+&nbsp;
+
+3. 時間が来たら、お知らせします。
+
+<img width="377" height="91" alt="image" src="https://github.com/user-attachments/assets/833efac3-7cfc-41d5-8f4d-baae5af42cec" />
+
+&nbsp;
