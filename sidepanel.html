@@ -3,111 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <title>Countdown Timer</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 10px;
-    }
-    #titleInput {
-      width: calc(100% - 20px);
-      padding: 5px;
-    }
-    #timeSelect {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3px;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
-    #timeSelect button {
-      width:31%;
-      padding:10px;
-    }
-    #history {
-      max-height: calc(100% - 200px);
-      overflow-y: scroll;
-    }
-    #timerTitle {
-      font-weight: bold;
-      font-size: xx-large;
-    }
-    #countdown {
-      font-size: xx-large;
-    }
-    #stopBtn {
-      font-size: x-large;
-      width: 100%;
-      margin: 15px 0px;
-    }
-    #clearHistoryBtn {
-      margin-top: 10px;
-    }
-
-    #clock {    
-      margin: -16px 0;
-    }
-    #clock-container {
-      display: flex;
-      justify-content: center;
-    }
-    #currentTime {
-      display: flex;
-      align-items: baseline;
-    }
-    #currentTimeHourMinite {
-      font-size: 80px;
-    }
-    #currentTimeSecond {
-      font-size: 30px;
-    }
-    #currentDate {
-      justify-self: center;
-      margin-top: -18px;
-      background-color: white;
-      padding: 0 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-  <h3>タイマーを設定</h3>
-  <input type="text" id="titleInput" placeholder="やることを宣言しましょう！" />
-  <br>
-  <div id="timeSelect">
-    <button value="1">1分</button>
-    <button value="3">3分</button>
-    <button value="5">5分</button>
-    <button value="10">10分</button>
-    <button value="15">15分</button>
-    <button value="20">20分</button>
-    <button value="30">30分</button>
-    <button value="45">45分</button>
-    <button value="60">60分</button>
-  </div>
-  <div>
-    <div id="timerTitle"></div>
-    <div id="countdown"></div>
-    <button id="stopBtn" style="display:none;">停止</button>
-  </div>
-
-  <hr>
-  <div id="clock-container">
-    <div id="clock">
-      <div id="currentTime">
-        <div id="currentTimeHourMinite">10:02</div>
-        <div id="currentTimeSecond">56</div>
+  <div id="tool-container">
+    <div id="tool-main">
+      <h3>タイマーを設定</h3>
+      <input type="text" id="titleInput" placeholder="やることを宣言しましょう！" />
+      <br>
+      <div id="timeSelect">
+        <button value="1">1分</button>
+        <button value="3">3分</button>
+        <button value="5">5分</button>
+        <button value="10">10分</button>
+        <button value="15">15分</button>
+        <button value="20">20分</button>
+        <button value="30">30分</button>
+        <button value="45">45分</button>
+        <button value="60">60分</button>
       </div>
+      <div>
+        <div id="timerTitle"></div>
+        <div id="countdown"></div>
+        <button id="stopBtn" style="display:none;">停止</button>
+      </div>
+
+      <hr>
+      <div id="clock-container">
+        <div id="clock">
+          <div id="currentTime">
+            <div id="currentTimeHourMinite">10:02</div>
+            <div id="currentTimeSecond">56</div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div id="currentDate">9/28(日)</div>
+      <!-- <button id="basicBtn">basic</button>
+      <button id="listBtn">list</button>
+      <button id="imageBtn">image</button>
+      <button id="progressBtn">progress</button>
+      <button id="alermBtn">alerm</button>
+      <button id="alermGetBtn">get alerm</button> -->
+      <div id="history"></div>
+      <button id="clearHistoryBtn">履歴をクリア</button>
+    </div>
+    <div id="tool-sidemenu">
+      <button class="sidemenu-btn"><image src="images/icon_time.svg"></button>
+      <button class="sidemenu-btn"><image src="images/icon_hourglass.svg"></button>
+      <button class="sidemenu-btn"><image src="images/icon_book.svg"></button>
+      <button class="sidemenu-btn"><image src="images/icon_list.svg"></button>
     </div>
   </div>
-  <hr>
-  <div id="currentDate">9/28(日)</div>
-  <!-- <button id="basicBtn">basic</button>
-  <button id="listBtn">list</button>
-  <button id="imageBtn">image</button>
-  <button id="progressBtn">progress</button>
-  <button id="alermBtn">alerm</button>
-  <button id="alermGetBtn">get alerm</button> -->
-  <div id="history"></div>
-  <button id="clearHistoryBtn">履歴をクリア</button>
   <script src="sidepanel.js"></script>
 </body>
 </html>

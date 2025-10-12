@@ -1,0 +1,90 @@
+
+body {
+    font-family: sans-serif;
+}
+
+#tool-container {
+    display: flex;
+}
+
+#tool-main {
+    padding: 10px;
+}
+
+#tool-sidemenu {
+    height: calc(100vh - 18px);
+    width: 22px;
+    border-left: 1px solid lightgrey;
+}
+
+#titleInput {
+    width: calc(100% - 20px);
+    padding: 5px;
+}
+#timeSelect {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#timeSelect button {
+    width:31%;
+    padding:10px;
+}
+#history {
+    max-height: calc(100% - 200px);
+    overflow-y: scroll;
+}
+#timerTitle {
+    font-weight: bold;
+    font-size: xx-large;
+}
+#countdown {
+    font-size: xx-large;
+}
+#stopBtn {
+    font-size: x-large;
+    width: 100%;
+    margin: 15px 0px;
+}
+#clearHistoryBtn {
+    margin-top: 10px;
+}
+
+#clock {    
+    margin: -16px 0;
+}
+#clock-container {
+    display: flex;
+    justify-content: center;
+}
+#currentTime {
+    display: flex;
+    align-items: baseline;
+}
+#currentTimeHourMinite {
+    font-size: 80px;
+}
+#currentTimeSecond {
+    font-size: 30px;
+}
+#currentDate {
+    justify-self: center;
+    margin-top: -18px;
+    background-color: white;
+    padding: 0 10px;
+}
+
+.sidemenu-btn {
+    width: 24px;
+    height: 64px;
+    margin-bottom: 2px;
+}
+
+.sidemenu-btn > img {
+    width: 10px;
+    height: 10px;
+    transform: rotate(90deg);
+    transform-origin: 50% 50%;
+}
