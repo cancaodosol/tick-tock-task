@@ -8,45 +8,64 @@
 <body>
   <div id="tool-container">
     <div id="tool-main">
-      <h3>タイマーを設定</h3>
-      <input type="text" id="titleInput" placeholder="やることを宣言しましょう！" />
-      <br>
-      <div id="timeSelect">
-        <button value="1">1分</button>
-        <button value="3">3分</button>
-        <button value="5">5分</button>
-        <button value="10">10分</button>
-        <button value="15">15分</button>
-        <button value="20">20分</button>
-        <button value="30">30分</button>
-        <button value="45">45分</button>
-        <button value="60">60分</button>
+      <div class="todo-container">
+        <h3 class="title">TODO</h3>
+
+        <form id="addForm" class="add-form" aria-label="Add TODO">
+          <input id="todoInput" type="text" placeholder="やることを入力..." aria-label="TODO入力" />
+          <button id="addBtn" type="submit" aria-label="追加">＋</button>
+        </form>
+
+        <div class="list-wrap">
+          <ul id="todoList" class="todo-list" role="list" aria-label="TODO一覧"></ul>
+          <div id="empty" class="empty"></div>
+        </div>
       </div>
-      <div>
+      <div id="timer-container">
+        <h3>タイマーを設定</h3>
+        <input type="text" id="titleInput" placeholder="やることを宣言しましょう！" />
+        <br>
+        <div id="timeSelect">
+          <button value="1">1分</button>
+          <button value="3">3分</button>
+          <button value="5">5分</button>
+          <button value="10">10分</button>
+          <button value="15">15分</button>
+          <button value="20">20分</button>
+          <button value="30">30分</button>
+          <button value="45">45分</button>
+          <button value="60">60分</button>
+        </div>
+      </div>
+      <div id="countdownBox">
         <div id="timerTitle"></div>
         <div id="countdown"></div>
         <button id="stopBtn" style="display:none;">停止</button>
       </div>
 
       <hr>
-      <div id="clock-container">
-        <div id="clock">
-          <div id="currentTime">
-            <div id="currentTimeHourMinite">10:02</div>
-            <div id="currentTimeSecond">56</div>
+      <div id="currentTimeContainer">
+        <div id="clock-container">
+          <div id="clock">
+            <div id="currentTime">
+              <div id="currentTimeHourMinite">10:02</div>
+              <div id="currentTimeSecond">56</div>
+            </div>
           </div>
         </div>
+        <hr>
+        <div id="currentDate">9/28(日)</div>
       </div>
-      <hr>
-      <div id="currentDate">9/28(日)</div>
       <!-- <button id="basicBtn">basic</button>
       <button id="listBtn">list</button>
       <button id="imageBtn">image</button>
       <button id="progressBtn">progress</button>
       <button id="alermBtn">alerm</button>
       <button id="alermGetBtn">get alerm</button> -->
-      <div id="history"></div>
-      <button id="clearHistoryBtn">履歴をクリア</button>
+      <div id="history-container">
+        <div id="history"></div>
+        <button id="clearHistoryBtn">履歴をクリア</button>
+      </div>
     </div>
     <div id="tool-sidemenu">
       <button class="sidemenu-btn"><image src="images/icon_time.svg"></button>
