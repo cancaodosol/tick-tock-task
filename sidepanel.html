@@ -8,7 +8,7 @@
 <body>
   <div id="tool-container">
     <div id="tool-main">
-      <div class="todo-container">
+      <div id="todo-container">
         <h3 class="title">TODO</h3>
 
         <form id="addForm" class="add-form" aria-label="Add TODO">
@@ -36,15 +36,15 @@
           <button value="45">45分</button>
           <button value="60">60分</button>
         </div>
-      </div>
-      <div id="countdownBox">
-        <div id="timerTitle"></div>
-        <div id="countdown"></div>
-        <button id="stopBtn" style="display:none;">停止</button>
+        <div id="countdownBox">
+          <div id="timerTitle"></div>
+          <div id="countdown"></div>
+          <button id="stopBtn" style="display:none;">停止</button>
+        </div>
       </div>
 
-      <hr>
       <div id="currentTimeContainer">
+        <hr>
         <div id="clock-container">
           <div id="clock">
             <div id="currentTime">
@@ -68,10 +68,10 @@
       </div>
     </div>
     <div id="tool-sidemenu">
-      <button class="sidemenu-btn"><image src="images/icon_time.svg"></button>
-      <button class="sidemenu-btn"><image src="images/icon_hourglass.svg"></button>
-      <button class="sidemenu-btn"><image src="images/icon_book.svg"></button>
-      <button class="sidemenu-btn"><image src="images/icon_list.svg"></button>
+      <button id="btn-todolist" class="sidemenu-btn"><image src="images/icon_list.svg"></button>
+      <button id="btn-hourglass" class="sidemenu-btn"><image src="images/icon_hourglass.svg"></button>
+      <button id="btn-timer" class="sidemenu-btn"><image src="images/icon_time.svg"></button>
+      <button id="btn-book" class="sidemenu-btn"><image src="images/icon_book.svg"></button>
     </div>
   </div>
   <script src="sidepanel.js"></script>
