@@ -286,6 +286,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const controls = document.createElement('div');
     controls.className = 'controls';
 
+    // go to do button
+    const gotToDoBtn = document.createElement('button');
+    gotToDoBtn.type = 'button';
+    gotToDoBtn.className = 'btn go-to-do';
+    gotToDoBtn.textContent = '▼';
+    gotToDoBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.getElementById('titleInput').value = item.text;
+      document.getElementById('titleInput').focus();
+    });
+
     // delete button
     const delBtn = document.createElement('button');
     delBtn.type = 'button';
@@ -296,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
       deleteItem(item.id);
     });
 
+    controls.appendChild(gotToDoBtn);
     controls.appendChild(delBtn);
 
     li.appendChild(checkbox);
