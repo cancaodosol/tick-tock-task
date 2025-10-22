@@ -1,0 +1,147 @@
+#countdownBox2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    /* 時計全体の大きさ */
+    /* ウインドーのスクロール幅に対する割合で指定 */
+    --clocksize: 50vw;
+    background: #fff;
+    height: var(--clocksize);
+}
+
+#timetimer {
+    position: relative;
+    top: 0px; /* これは画面上から下方向にずらす距離 */
+    border: 3px solid;
+    /*正方形を指定*/
+    width: var(--clocksize);
+    height: var(--clocksize);
+    /* 正方形を円に変換 */
+    border-radius: 50%;  /* border-radius: 半径;  半径50%で円*/
+}
+
+#clockFace {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 時計の目盛り（時刻） */
+.mark_10minutes {
+    position: absolute;
+    width: 2px; /* 目盛りの太さ */
+    --mark_minute_long : calc(var(--clocksize) * 0.05); 
+    height: var(--mark_minute_long); /* 目盛りの長さ */
+    background: #474a4d;
+    transform-origin: right;
+    /* clockFaceで盤面の中心に設置 */
+    /* 時計盤幅の半分ずらして、目盛りの長さの半分ずらす */
+    transform: rotate(calc(30deg * var(--j))) translate(0, calc(var(--clocksize) * -0.5 + var(--mark_minute_long)/2));
+}
+
+/* 時計の目盛り（分） */
+.mark_minute {
+    position: absolute;
+    width: 1px; /* 目盛りの太さ */
+    --mark_hour_long : calc(var(--clocksize) * 0.03); 
+    height: var(--mark_hour_long); /* 目盛りの長さ */
+    background: #474a4d;
+    transform-origin: right;
+    /* clockFaceで盤面の中心に設置 */
+    /* 時計盤幅の半分ずらして、目盛りの長さの半分ずらす */
+    transform: rotate(calc(6deg * var(--j))) translate(0, calc(var(--clocksize) * -0.5 + var(--mark_hour_long)/2));
+}
+
+/* 数字を置く領域 */
+.number_area {
+    position: absolute;
+    font-size: calc(var(--clocksize)* 0.06);
+    width: calc(var(--clocksize)* 0.06);
+    height: calc(var(--clocksize)* 0.06);
+    text-align: center;
+    /*
+        数字を置く領域を盤面（clockFace）の中心に設置 
+        そして、translate(x軸方向の移動距離, y軸方向の移動距離) で
+        盤面幅の半分ずらす。　calc(var(--clocksize) * -0.5 
+        図面を見ながら微調整。今回は0.78倍
+        角度によって位置が変わるので、フォントサイズを元に微調整(var(--i) * calc(var(--clocksize)* 0.06) * 0.01) 
+        */
+    transform: rotate(calc(30deg * var(--i))) translate(0, calc(var(--clocksize) * -0.5 * 0.78 - var(--i) * (var(--clocksize)* 0.06) * 0.01) );
+    transform-origin: center;
+}
+
+/* 文字 */
+.number {
+    font-size: calc(var(--clocksize)* 0.06);
+    width: calc(var(--clocksize)* 0.06);
+    height: calc(var(--clocksize)* 0.06);
+    /* 親のdivが傾いているので、文字の角度を戻す */
+    transform: rotate(calc(-30deg * var(--i)));
+}
+
+/* 日付表示 */
+#dateArea {
+    position: absolute;
+    top: 52%; /* これは画面上から下方向にずらす距離 */
+    width: var(--clocksize);
+    font-size: calc(var(--clocksize)* 0.1);
+    text-align: center;
+}
+
+/* 午前午後表示 */
+#branchAmPm {
+    position: absolute;
+    top: 65%; /* これは画面上から下方向にずらす距離 */
+    width: var(--clocksize);
+    font-size: calc(var(--clocksize)* 0.05);
+    text-align: center;
+}
+
+/* 時計の針共通 */
+.hand {
+    position: absolute;
+    top: 50%; /* これは親要素 .clock の高さの50%下から描画 */
+    /* 針の右端を画面の中心に置く */
+    right: 50%;
+    /* 変形させる要素の中心点 右端を回転の中心にする */
+    transform-origin: right;
+    
+    /* transform:変形後の表示効果 */
+    /*
+    ease-in     開始時は緩やかに、終了時は早く変化
+    ease-out    ease-inとは逆に開始時は早く終了時は緩やかに
+    ease-in-out 開始時と終了時の変化をeaseより緩やかに
+    */
+    transition: transform 0.0s;
+}
+/* 秒針 */
+#countDownSecond {
+    height: 1.5px;  /* 針の太さ */
+    width: 50%;  /* 針の長さ */
+    background: #474a4d;
+    transform: rotate(calc(90deg + 1deg * var(--i))); /* 針の角度を指定 */
+}
+
+/* 秒針 */
+#countDownSecond__zero {
+    height: 1.5px;  /* 針の太さ */
+    width: 50%;  /* 針の長さ */
+    background: #474a4d;
+    transform: rotate(90deg); /* 針の角度を指定 */
+}
+
+/* 半円 */
+#countDownSecondBackground {
+    position: absolute;
+    border-radius: 50%;
+    width: var(--clocksize); /* 扇形の大きさを指定 */
+    height: var(--clocksize);
+    background: conic-gradient(
+        #f5b1aa 0deg calc(1deg * var(--i)),
+        white calc(1deg * (var(--i))) 360deg
+    );
+}

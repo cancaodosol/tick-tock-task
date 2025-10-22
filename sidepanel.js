@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-  const countdownDiv = document.getElementById('countdown');
+  // const countdownDiv = document.getElementById('countdown');
   const timerTitleDiv = document.getElementById('timerTitle');
   const stopBtn = document.getElementById('stopBtn');
   const timeSelect = document.getElementById('timeSelect');
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.runtime.sendMessage({ type: 'stopAlermTimer', alermName: alermName, minutes: 0 });
     });
     timerTitleDiv.textContent = "";
-    countdownDiv.textContent = "";
+    // countdownDiv.textContent = "";
     timerTitleDiv.style.display = 'inline';
     timeSelect.style.display = 'inline';
     stopBtn.style.display = 'none';
@@ -54,6 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
           countdownDivHtml += ` <div>残り ${min}分 ${sec}秒</div>`;
           countdownDivHtml += ` <input class="stopAlermName" alermName="${alarm.name}" hidden></input>`;
           countdownDivHtml += "</div>";
+
+          timeTimer.setCountDownTimer(remainingSeconds, startDate);
         });
         countdownDivHtml += "</div>";
         countdownDiv.innerHTML = countdownDivHtml;
