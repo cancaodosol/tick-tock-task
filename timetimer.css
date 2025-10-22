@@ -1,16 +1,16 @@
-#countdownBox2 {
+#timetimer {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
     /* 時計全体の大きさ */
     /* ウインドーのスクロール幅に対する割合で指定 */
-    --clocksize: 50vw;
+    --clocksize: 55vw;
     background: #fff;
     height: var(--clocksize);
 }
 
-#timetimer {
+#timetimer-container {
     position: relative;
     top: 0px; /* これは画面上から下方向にずらす距離 */
     border: 3px solid;

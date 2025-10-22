@@ -1,6 +1,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
-  // const countdownDiv = document.getElementById('countdown');
+  const countdownBoxDiv = document.getElementById('countdownBox');
   const timerTitleDiv = document.getElementById('timerTitle');
   const stopBtn = document.getElementById('stopBtn');
   const timeSelect = document.getElementById('timeSelect');
@@ -17,17 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // タイマー停止
-  stopBtn.addEventListener('click', () => {
-    const stopAlermBtns = document.querySelectorAll(".stopAlermName");
-    stopAlermBtns.forEach((btn) => {
-      const alermName = btn.getAttribute("alermName");
-      chrome.runtime.sendMessage({ type: 'stopAlermTimer', alermName: alermName, minutes: 0 });
-    });
-    timerTitleDiv.textContent = "";
-    // countdownDiv.textContent = "";
+  stopBtn.addEventListener('click', (e) => {
+    const alermName = stopBtn.getAttribute("alermName");
+    chrome.runtime.sendMessage({ type: 'stopAlermTimer', alermName: alermName, minutes: 0 });
+    countdownBoxDiv.style.display = "none";
     timerTitleDiv.style.display = 'inline';
-    timeSelect.style.display = 'inline';
-    stopBtn.style.display = 'none';
+    timeSelect.style.display = 'block';
+    titleInput.style.display = 'block';
   });
 
   // タイマー状態を定期的に取得
@@ -35,11 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.alarms.getAll().then((alarms) => {
       if (!alarms) return;
       if (alarms.length > 0) {
+        countdownBoxDiv.style.display = "block";
         titleInput.style.display = 'none';
         timeSelect.style.display = 'none';
         stopBtn.style.display = 'inline';
 
-        let countdownDivHtml = "<div>";
         alarms.forEach((alarm) => {
           const words = alarm.name.split("___");
           const startDate = new Date(Number(words[1]));
@@ -49,21 +45,14 @@ document.addEventListener('DOMContentLoaded', () => {
           const min = Math.floor(remainingSeconds / 60);
           const sec = remainingSeconds % 60;
 
-          countdownDivHtml += "<div>";
-          countdownDivHtml += ` <strong>${title}</strong>`;
-          countdownDivHtml += ` <div>残り ${min}分 ${sec}秒</div>`;
-          countdownDivHtml += ` <input class="stopAlermName" alermName="${alarm.name}" hidden></input>`;
-          countdownDivHtml += "</div>";
-
+          timerTitleDiv.textContent = title;
+          stopBtn.setAttribute("alermName", alarm.name);
           timeTimer.setCountDownTimer(remainingSeconds, startDate);
         });
-        countdownDivHtml += "</div>";
-        countdownDiv.innerHTML = countdownDivHtml;
       } else {
         timerTitleDiv.textContent = "";
-        countdownDiv.textContent = "";
-        titleInput.style.display = 'inline';
-        timeSelect.style.display = 'inline';
+        countdownBoxDiv.style.display = "none";
+        timeSelect.style.display = 'block';
         stopBtn.style.display = 'none';
       }
     });
