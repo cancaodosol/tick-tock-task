@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         timerTitleDiv.textContent = "";
         countdownBoxDiv.style.display = "none";
+        titleInput.style.display = 'block';
         timeSelect.style.display = 'block';
         stopBtn.style.display = 'none';
       }
