@@ -13,7 +13,7 @@ body {
 }
 
 #tool-sidemenu {
-    height: calc(100vh - 18px);
+    min-height: calc(100vh - 18px);
     width: 22px;
     border-left: 1px solid lightgrey;
 }
