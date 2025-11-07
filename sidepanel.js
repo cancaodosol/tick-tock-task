@@ -5,7 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const stopBtn = document.getElementById('stopBtn');
   const timeSelect = document.getElementById('timeSelect');
   const titleInput = document.getElementById('titleInput');
+  const titleInputBox = document.getElementById('titleInputBox');
   const historyDiv = document.getElementById('history');
+
+  // タイトル入力欄クリアボタン
+  document.getElementById('clearTodoBtn').addEventListener('click', () => {
+    titleInput.value = '';
+    titleInput.focus();
+  });
 
   // タイマー開始2
   document.querySelectorAll("#timeSelect button").forEach((ele) => {
@@ -23,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     countdownBoxDiv.style.display = "none";
     timerTitleDiv.style.display = 'inline';
     timeSelect.style.display = 'block';
-    titleInput.style.display = 'block';
+    titleInputBox.style.display = 'flex';
   });
 
   // タイマー状態を定期的に取得
@@ -32,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!alarms) return;
       if (alarms.length > 0) {
         countdownBoxDiv.style.display = "block";
-        titleInput.style.display = 'none';
+        titleInputBox.style.display = 'none';
         timeSelect.style.display = 'none';
         stopBtn.style.display = 'inline';
 
@@ -52,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         timerTitleDiv.textContent = "";
         countdownBoxDiv.style.display = "none";
-        titleInput.style.display = 'block';
+        titleInputBox.style.display = 'flex';
         timeSelect.style.display = 'block';
         stopBtn.style.display = 'none';
       }

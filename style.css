@@ -20,10 +20,26 @@ body {
     border-left: 1px solid lightgrey;
 }
 
+#titleInputBox {
+    display: flex;
+    gap: 3px;
+}
+
 #titleInput {
     width: calc(100% - 20px);
     padding: 5px;
 }
+
+#clearTodoBtn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  /* color: white; */
+  font-weight: 600;
+  cursor: pointer;
+}
+
 #timeSelect {
     display: flex;
     flex-wrap: wrap;
@@ -114,6 +130,7 @@ body {
   margin-bottom: 5px;;
   padding: 5px;
 }
+
 #todoInput:focus {
   /* outline: none;
   box-shadow: 0 0 0 3px rgba(11,132,255,0.10);
