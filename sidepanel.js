@@ -66,15 +66,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // 履歴表示
+    const youbi = ['日', '月', '火', '水', '木', '金', '土'];
     chrome.storage.local.get({ history: [] }, (data) => {
       historyDiv.innerHTML = "<h4>タイマー履歴</h4>";
+      let oldDateString = "";
       data.history.reverse().forEach(entry => {
         let start = new Date(entry.start).toLocaleTimeString();
         start = start.substring(0, start.length - 3)
         let end = new Date(entry.end).toLocaleTimeString();
         end = end.substring(0, end.length - 3)
         const title = entry.title || "";
+        if(oldDateString !== new Date(entry.start).toLocaleDateString()) {
+          const youbistr = youbi[new Date(entry.start).getDay()];
+          historyDiv.innerHTML += `<div style="margin-top:20px; margin-bottom:5px;">【 ${new Date(entry.start).toLocaleDateString()}(${youbistr}) 】</div>`;
+        }
         historyDiv.innerHTML += `<div>${start} ～ ${end} (${entry.minutes}分)：${title}</div>`;
+        oldDateString = new Date(entry.start).toLocaleDateString();
       });
     });
   }, 1000);
