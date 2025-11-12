@@ -114,61 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   titleInput.focus();
 
-  // ボタンテスト
-  // document.getElementById('basicBtn').addEventListener('click', () => {
-  //   chrome.notifications.create('test-notification', {
-  //     type: "basic",
-  //     iconUrl: "icon.png",
-  //     title: "メッセージテスト",
-  //     message: "リストです！！",
-  //     contextMessage: "ちっちゃめのメッセージです！",
-  //     requireInteraction: true,
-  //     buttons: [
-  //       { title: "延期" },
-  //       { title: "完了" }
-  //     ]
-  //   });
-  // });
-  // document.getElementById('listBtn').addEventListener('click', () => {
-  //   chrome.notifications.create({
-  //     type: "list",
-  //     iconUrl: "icon.png",
-  //     title: "メッセージテスト",
-  //     message: "リストです！！"
-  //   });
-  // });
-  // document.getElementById('imageBtn').addEventListener('click', () => {
-  //   chrome.notifications.create({
-  //     type: "image",
-  //     iconUrl: "icon.png",
-  //     title: "メッセージテスト",
-  //     message: "imageです！！"
-  //   });
-  // });
-  // document.getElementById('progressBtn').addEventListener('click', () => {
-  //   chrome.notifications.create({
-  //     type: "progress",
-  //     iconUrl: "icon.png",
-  //     title: "メッセージテスト",
-  //     message: "progressです！！",
-  //     requireInteraction: true
-  //   });
-  // });
-  // document.getElementById('alermBtn').addEventListener('click', () => {
-  //   const title = titleInput.value.trim();
-  //   chrome.runtime.sendMessage({ type: 'startAlermTimer', minutes: 1, title: title });
-  // });
-  // document.getElementById('alermGetBtn').addEventListener('click', () => {
-  //   console.log('pushed alermGetBtn.');
-  //   chrome.alarms.getAll().then((alarms) => {
-  //     alarms.forEach((alarm) => {
-  //       const words = alarm.name.split("___");
-  //       console.log(alarm);
-  //       console.log((new Date(Number(words[1]))).toLocaleTimeString() + " ~ " + (new Date(alarm.scheduledTime)).toLocaleTimeString() + " : " + words[2]);
-  //     });
-  //   });
-  // });
-
   document.getElementById('btn-timer').style.backgroundColor = '#a2d7dd';
   document.getElementById('btn-hourglass').style.backgroundColor = '#dbd0e6';
   document.getElementById('btn-book').style.backgroundColor = '#f4dda5';
