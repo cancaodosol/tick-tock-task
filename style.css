@@ -136,8 +136,8 @@ body {
   box-shadow: 0 0 0 3px rgba(11,132,255,0.10);
   border-color: var(--accent); */
 }
-#addBtn {
-  padding: 8px 12px;
+.todoInputBtn {
+  padding: 8px 4px;
   border-radius: 6px;
   border: none;
   background: var(--accent);
@@ -264,4 +264,13 @@ body {
 @media (max-width: 420px) {
   .container { padding: 10px; }
   #todoInput { font-size: 13px; }
+}
+
+#todo-list-text {
+  field-sizing: content;
+  min-height: min-content;
+  padding: 10px;
+  font-size: 0.8rem;
+  font-family: sans-serif;
+  border-color: #f0f0f0;
 }

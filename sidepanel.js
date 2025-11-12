@@ -152,6 +152,10 @@ document.addEventListener('DOMContentLoaded', () => {
     form: document.getElementById('addForm'),
     input: document.getElementById('todoInput'),
     list: document.getElementById('todoList'),
+    textareaContainer: document.getElementById('todo-list-text-container'),
+    textarea: document.getElementById('todo-list-text'),
+    showMemo: document.getElementById('showMemoBtn'),
+    closeMemo: document.getElementById('closeMemoBtn'),
     empty: document.getElementById('empty')
   };
 
@@ -162,10 +166,21 @@ document.addEventListener('DOMContentLoaded', () => {
     try { return new Date(ts).toLocaleString(); } catch (e) { return ''; }
   };
 
+  // 曜日を日本語で取得する関数
+  const weekdays = ['日','月','火','水','木','金','土'];
+  function formatDateJP(timestamp) {
+      const d = new Date(timestamp);
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      const weekday = weekdays[d.getDay()];
+      return `${month}/${day}(${weekday})`;
+  }
+
   // storage
   function loadData(cb) {
     chrome.storage.sync.get([STORAGE_KEY], (res) => {
       const arr = res[STORAGE_KEY];
+      console.log('Loaded data:', arr);
       if (!Array.isArray(arr)) cb([]);
       else cb(arr);
     });
@@ -190,6 +205,39 @@ document.addEventListener('DOMContentLoaded', () => {
       const li = makeLi(item, idx);
       els.list.appendChild(li);
     });
+    renderTextArea(arr);
+  }
+
+  function renderTextArea(arr) {
+    const grouped = arr.reduce((acc, todo) => {
+        if(todo.completed) {
+            const date = new Date(todo.completedAt).toISOString().slice(0,10); // YYYY-MM-DD
+            if(!acc.completed[date]) acc.completed[date] = [];
+            acc.completed[date].push(todo.text);
+        } else {
+            acc.uncompleted.push(todo.text);
+        }
+        return acc;
+    }, {completed: {}, uncompleted: []});
+
+    // 完了済みの日付を降順でソート
+    const completedDates = Object.keys(grouped.completed).sort((a,b) => new Date(b) - new Date(a));
+
+    // 結果を文字列化
+    let output = '=== 完了済み ===\n';
+    for(const date of completedDates) {
+        output += `\n${formatDateJP(date)}:\n`;
+        grouped.completed[date].forEach(text => {
+            output += `  - ${text}\n`;
+        });
+    }
+
+    output += '\n\n=== 未完了 ===\n\n';
+    grouped.uncompleted.forEach(text => {
+        output += `  - ${text}\n`;
+    });
+
+    els.textarea.value = output;
   }
 
   // create li element (draggable)
@@ -478,6 +526,16 @@ document.addEventListener('DOMContentLoaded', () => {
   els.form.addEventListener('submit', (e) => {
     e.preventDefault();
     addFromInput();
+  });
+
+  els.showMemo.addEventListener('click', () => {
+    els.textareaContainer.style.display = els.textareaContainer.style.display == 'block' ? 'none' : 'block';
+    els.list.style.display = els.textareaContainer.style.display == 'block' ? 'none' : 'block';
+  });
+
+  els.closeMemo.addEventListener('click', () => {
+    els.textareaContainer.style.display = 'none';
+    els.list.style.display = 'block';
   });
 
   // initial load
