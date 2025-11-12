@@ -114,31 +114,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   titleInput.focus();
 
-  document.getElementById('btn-timer').style.backgroundColor = '#a2d7dd';
-  document.getElementById('btn-hourglass').style.backgroundColor = '#dbd0e6';
-  document.getElementById('btn-book').style.backgroundColor = '#f4dda5';
-  document.getElementById('btn-todolist').style.backgroundColor = '#fef4f4';
-   
-  document.getElementById('btn-timer').addEventListener('click', (e) => {
-    const targetElement = document.getElementById('currentTimeContainer');
-    document.getElementById('btn-timer').style.backgroundColor = targetElement.style.display === 'none' ? '#a2d7dd' : '#f8fbf8';
-    targetElement.style.display = targetElement.style.display === 'none' ? 'block' : 'none';   
-  });
-  document.getElementById('btn-hourglass').addEventListener('click', (e) => {
-    const targetElement = document.getElementById('timer-container');
-    document.getElementById('btn-hourglass').style.backgroundColor = targetElement.style.display === 'none' ? '#dbd0e6' : '#f8fbf8';
-    targetElement.style.display = targetElement.style.display === 'none' ? 'block' : 'none';
-  });
-  document.getElementById('btn-book').addEventListener('click', (e) => {
-    const targetElement = document.getElementById('history-container');
-    document.getElementById('btn-book').style.backgroundColor = targetElement.style.display === 'none' ? '#f4dda5' : '#f8fbf8';
-    targetElement.style.display = targetElement.style.display === 'none' ? 'block' : 'none';
-  });
-  document.getElementById('btn-todolist').addEventListener('click', (e) => {
-    const targetElement = document.getElementById('todo-container');
-    document.getElementById('btn-todolist').style.backgroundColor = targetElement.style.display === 'none' ? '#fef4f4' : '#f8fbf8';
-    targetElement.style.display = targetElement.style.display === 'none' ? 'block' : 'none';
-  });
+  const sideMenuButtons = {
+    'btn-timer' : { display: true, bgColor: '#a2d7dd', targetContainer: 'currentTimeContainer' },
+    'btn-hourglass' : { display: true, bgColor: '#dbd0e6', targetContainer: 'timer-container' },
+    'btn-book' : { display: true, bgColor: '#f4dda5', targetContainer: 'history-container' },
+    'btn-todolist' : { display: true, bgColor: '#fef4f4', targetContainer: 'todo-container' },
+  };
+
+  function refreshSideMenuButtons() {
+    for (const [btnId, config] of Object.entries(sideMenuButtons)) {
+        const targetElement = document.getElementById(config.targetContainer);
+        document.getElementById(btnId).style.backgroundColor = config.display ? config.bgColor : '#f8fbf8';
+        targetElement.style.display = config.display ? 'block' : 'none';
+      }
+  }
+
+  for (const [btnId, config] of Object.entries(sideMenuButtons)) {
+      document.getElementById(btnId).addEventListener('click', () => {
+          config.display = !config.display;
+          refreshSideMenuButtons();
+      });
+  }
+
+  refreshSideMenuButtons();
 });
 
 // sidepanel.js
