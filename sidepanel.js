@@ -112,8 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCurrentTime();
   setInterval(updateCurrentTime, 1000);
 
-  titleInput.focus();
-
   const sideMenuButtons = {
     'btn-timer' : { display: true, bgColor: '#a2d7dd', targetContainer: 'currentTimeContainer' },
     'btn-hourglass' : { display: true, bgColor: '#dbd0e6', targetContainer: 'timer-container' },
@@ -536,6 +534,7 @@ document.addEventListener('DOMContentLoaded', () => {
   els.closeMemo.addEventListener('click', () => {
     els.textareaContainer.style.display = 'none';
     els.list.style.display = 'block';
+    els.input.focus();
   });
 
   // initial load
