@@ -267,6 +267,7 @@ body {
 }
 
 #todo-list-text {
+  width: calc(100% - 20px)
   field-sizing: content;
   min-height: min-content;
   padding: 10px;
