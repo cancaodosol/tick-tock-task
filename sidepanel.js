@@ -8,6 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const titleInputBox = document.getElementById('titleInputBox');
   const historyDiv = document.getElementById('history');
 
+  if (typeof setupQuoteWidget === 'function') {
+    setupQuoteWidget();
+  } else {
+    console.warn('setupQuoteWidget is not available.');
+  }
+
   // タイトル入力欄クリアボタン
   document.getElementById('clearTodoBtn').addEventListener('click', () => {
     titleInput.value = '';

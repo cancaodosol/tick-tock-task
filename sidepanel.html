@@ -10,6 +10,20 @@
 <body>
   <div id="tool-container">
     <div id="tool-main">
+      <div id="quote-container">
+        <div id="quote-card">
+          <div id="quote-loading">読み込み中...</div>
+          <div id="quote-error" class="quote-message"></div>
+          <div id="quote-content" class="quote-content" style="display:none;">
+            <div class="quote-title" id="quote-title"></div>
+            <div class="quote-body" id="quote-body"></div>
+            <div class="quote-meta">
+              <div><span id="quote-author"></span> 著「<span id="quote-book"></span>」</div>
+            </div>
+          </div>
+          <button id="quote-refresh" aria-label="名言を更新">名言を更新</button>
+        </div>
+      </div>
       <div id="todo-container">
         <h3 class="title">TODO</h3>
 
@@ -95,6 +109,7 @@
       <button id="btn-book" class="sidemenu-btn"><image src="images/icon_book.svg"></button>
     </div>
   </div>
+  <script src="quote.js"></script>
   <script src="sidepanel.js"></script>
   <script src="todolist.js"></script>
   <script src="timetimer.js"></script>

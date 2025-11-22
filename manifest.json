@@ -23,6 +23,11 @@
     "notifications",
     "storage",
     "sidePanel",
-    "alarms"
+    "alarms",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "https://h1deblog.com/*"
   ]
 }

@@ -110,3 +110,65 @@ body {
     transform: rotate(90deg);
     transform-origin: 50% 50%;
 }
+
+#quote-container {
+  margin-bottom: 16px;
+}
+
+#quote-card {
+  padding: 10px;
+  border: 1px solid #f0e4c3;
+  border-radius: 10px;
+  background: #fffaf0;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+#quote-loading {
+  color: #8a6d3b;
+  font-size: 0.9rem;
+}
+
+#quote-error {
+  color: #b94a48;
+  font-size: 0.9rem;
+}
+
+.quote-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.quote-body {
+  white-space: pre-wrap;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.quote-meta {
+  font-size: 0.7rem;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 2px;
+  margin-bottom: 10px;
+}
+
+.quote-label {
+  font-weight: 600;
+}
+
+#quote-refresh {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  background: #f4dda5;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+#quote-refresh:hover {
+  background: #f1d48c;
+}
