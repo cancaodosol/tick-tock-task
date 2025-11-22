@@ -35,6 +35,7 @@ chrome.action.onClicked.addListener(() => {
 //拡張機能をインストールしたときに呼ばれる
 chrome.runtime.onInstalled.addListener(function() {
   chrome.alarms.clearAll();
+  ensureQuoteCorsRule();
 });
 
 //設定した周期でアラームが呼ばれる
@@ -104,3 +105,36 @@ function stopAlerm(alermName) {
 
   chrome.alarms.clear(alermName);
 }
+
+// Ensure we can fetch the quote API without CORS errors by setting response headers.
+function ensureQuoteCorsRule() {
+  const RULE_ID = 1;
+  const rule = {
+    id: RULE_ID,
+    priority: 1,
+    action: {
+      type: 'modifyHeaders',
+      responseHeaders: [
+        { header: 'Access-Control-Allow-Origin', operation: 'set', value: '*' },
+        { header: 'Access-Control-Allow-Headers', operation: 'set', value: '*' },
+        { header: 'Access-Control-Allow-Methods', operation: 'set', value: 'GET, OPTIONS' }
+      ]
+    },
+    condition: {
+      urlFilter: '||h1deblog.com/wp-json/quotes/v1/random*',
+      resourceTypes: ['xmlhttprequest']
+    }
+  };
+
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [RULE_ID],
+    addRules: [rule]
+  }, () => {
+    if (chrome.runtime.lastError) {
+      console.warn('Failed to set CORS rule for quotes API:', chrome.runtime.lastError);
+    }
+  });
+}
+
+// Also attempt to set the rule when the service worker starts, in case onInstalled missed.
+ensureQuoteCorsRule();
