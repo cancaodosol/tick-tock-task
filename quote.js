@@ -7,9 +7,8 @@ function setupQuoteWidget() {
   const quoteContent = document.getElementById('quote-content');
   const quoteLoading = document.getElementById('quote-loading');
   const quoteError = document.getElementById('quote-error');
-  const quoteRefresh = document.getElementById('quote-refresh');
 
-  if (!quoteTitle || !quoteBody || !quoteBook || !quoteAuthor || !quoteContent || !quoteLoading || !quoteError || !quoteRefresh) {
+  if (!quoteTitle || !quoteBody || !quoteBook || !quoteAuthor || !quoteContent || !quoteLoading || !quoteError) {
     console.warn('Quote elements not found; skipping setup.');
     return;
   }
@@ -47,8 +46,6 @@ function setupQuoteWidget() {
       quoteLoading.style.display = 'none';
     }
   };
-
-  quoteRefresh.addEventListener('click', () => loadQuote(true));
 
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
