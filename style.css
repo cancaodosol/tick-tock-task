@@ -158,17 +158,3 @@ body {
 .quote-label {
   font-weight: 600;
 }
-
-#quote-refresh {
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
-  background: #f4dda5;
-  font-weight: 600;
-  cursor: pointer;
-  width: 100%;
-}
-
-#quote-refresh:hover {
-  background: #f1d48c;
-}
