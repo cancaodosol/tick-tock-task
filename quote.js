@@ -4,6 +4,7 @@ function setupQuoteWidget() {
   const quoteBody = document.getElementById('quote-body');
   const quoteBook = document.getElementById('quote-book');
   const quoteAuthor = document.getElementById('quote-author');
+  const quotePage = document.getElementById('quote-page');
   const quoteContent = document.getElementById('quote-content');
   const quoteLoading = document.getElementById('quote-loading');
   const quoteError = document.getElementById('quote-error');
@@ -37,6 +38,7 @@ function setupQuoteWidget() {
       quoteBody.textContent = toPlainText(data.content) || '本文が取得できませんでした';
       quoteBook.textContent = data.book?.title || '不明';
       quoteAuthor.textContent = data.book?.author?.title || '不明';
+      quotePage.textContent = data.page || '';
       quoteContent.style.display = 'block';
     } catch (err) {
       console.error('名言の取得に失敗しました', err);
