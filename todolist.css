@@ -34,22 +34,38 @@
   max-height: calc(100vh - 220px);
 }
 
+.subtask-list {
+  list-style: none;
+  padding-left: 18px;
+  margin: 4px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 /* item */
 .todo-item {
-  display: flex;
-  align-items: center;
+  display: block;
   font-size: 0.8rem;
-  gap: 10px;
   padding: 2px 5px;
   border-radius: var(--radius);
   border: 1px solid #f0f0f0;
   background: var(--card);
   transition: background .12s, box-shadow .12s;
 }
+.todo-item.subtask {
+  background: #fafafa;
+}
 .todo-item:focus-within,
 .todo-item:hover {
   background: #fff;
   box-shadow: 0 1px 6px rgba(0,0,0,.06);
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 /* drag indicator */
@@ -126,6 +142,10 @@
 .btn.delete {
   color: var(--danger);
   font-weight: 600;
+}
+.btn.add-subtask {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 /* empty */

@@ -18,6 +18,33 @@
   const isBlank = (s) => !s || s.trim().length === 0;
   const makeId = () => `${Date.now()}_${Math.floor(Math.random() * 1e6)}`;
 
+  function normalizeTasks(arr) {
+    if (!Array.isArray(arr)) return [];
+    return arr.map((t) => ({
+      ...t,
+      subtasks: Array.isArray(t.subtasks) ? normalizeTasks(t.subtasks) : []
+    }));
+  }
+
+  function findItem(arr, id) {
+    let found = null;
+    function dfs(list, parentArray) {
+      for (let i = 0; i < list.length; i++) {
+        const t = list[i];
+        if (t.id === id) {
+          found = { item: t, parentArray: list, index: i };
+          return true;
+        }
+        if (Array.isArray(t.subtasks) && t.subtasks.length > 0) {
+          if (dfs(t.subtasks, t.subtasks)) return true;
+        }
+      }
+      return false;
+    }
+    dfs(arr, null);
+    return found;
+  }
+
   function formatDateJP(timestamp) {
     const d = new Date(timestamp);
     const month = d.getMonth() + 1;
@@ -28,9 +55,8 @@
 
   function loadData(cb) {
     chrome.storage.sync.get([STORAGE_KEY], (res) => {
-      const arr = res[STORAGE_KEY];
-      if (!Array.isArray(arr)) cb([]);
-      else cb(arr);
+      const arr = normalizeTasks(res[STORAGE_KEY]);
+      cb(arr);
     });
   }
 
@@ -58,16 +84,25 @@
   }
 
   function renderTextArea(arr) {
-    const grouped = arr.reduce((acc, todo) => {
-      if (todo.completed) {
-        const date = new Date(todo.completedAt).toISOString().slice(0, 10);
-        if (!acc.completed[date]) acc.completed[date] = [];
-        acc.completed[date].push(todo.text);
-      } else {
-        acc.uncompleted.push(todo.text);
-      }
-      return acc;
-    }, { completed: {}, uncompleted: [] });
+    const grouped = { completed: {}, uncompleted: [] };
+
+    const collect = (list, prefix) => {
+      list.forEach((todo) => {
+        const label = prefix ? `${prefix} > ${todo.text}` : todo.text;
+        if (todo.completed) {
+          const date = new Date(todo.completedAt).toISOString().slice(0, 10);
+          if (!grouped.completed[date]) grouped.completed[date] = [];
+          grouped.completed[date].push(label);
+        } else {
+          grouped.uncompleted.push(label);
+        }
+        if (Array.isArray(todo.subtasks) && todo.subtasks.length) {
+          collect(todo.subtasks, label);
+        }
+      });
+    };
+
+    collect(arr, '');
 
     const completedDates = Object.keys(grouped.completed).sort((a, b) => new Date(b) - new Date(a));
 
@@ -87,21 +122,26 @@
     els.textarea.value = output;
   }
 
-  function makeLi(item, index) {
+  function makeLi(item, index, isSubtask = false) {
     const li = document.createElement('li');
-    li.className = 'todo-item';
-    li.draggable = true;
+    li.className = `todo-item ${isSubtask ? 'subtask' : 'root'}`.trim();
     li.dataset.id = item.id;
-    li.dataset.index = index;
 
-    li.addEventListener('dragstart', (e) => {
-      li.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', String(index));
-    });
-    li.addEventListener('dragend', () => {
-      li.classList.remove('dragging');
-    });
+    if (!isSubtask) {
+      li.draggable = true;
+      li.dataset.index = index;
+      li.addEventListener('dragstart', (e) => {
+        li.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(index));
+      });
+      li.addEventListener('dragend', () => {
+        li.classList.remove('dragging');
+      });
+    }
+
+    const row = document.createElement('div');
+    row.className = 'item-row';
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -134,6 +174,21 @@
       document.getElementById('titleInput').focus();
     });
 
+    if (!isSubtask) {
+      const addSubBtn = document.createElement('button');
+      addSubBtn.type = 'button';
+      addSubBtn.className = 'btn add-subtask';
+      addSubBtn.textContent = '＋';
+      addSubBtn.title = '小タスクを追加';
+      addSubBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const raw = window.prompt('小タスクを入力してください');
+        if (!raw || isBlank(raw)) return;
+        addSubtask(item.id, raw.trim());
+      });
+      controls.appendChild(addSubBtn);
+    }
+
     const delBtn = document.createElement('button');
     delBtn.type = 'button';
     delBtn.className = 'btn delete';
@@ -146,9 +201,19 @@
     controls.appendChild(gotToDoBtn);
     controls.appendChild(delBtn);
 
-    li.appendChild(checkbox);
-    li.appendChild(textDiv);
-    li.appendChild(controls);
+    row.appendChild(checkbox);
+    row.appendChild(textDiv);
+    row.appendChild(controls);
+    li.appendChild(row);
+
+    if (Array.isArray(item.subtasks) && item.subtasks.length > 0) {
+      const subList = document.createElement('ul');
+      subList.className = 'subtask-list';
+      item.subtasks.forEach((sub, idx) => {
+        subList.appendChild(makeLi(sub, idx, true));
+      });
+      li.appendChild(subList);
+    }
 
     return li;
   }
@@ -188,13 +253,13 @@
         return;
       }
       loadData((arr) => {
-        const i = arr.findIndex(t => t.id === item.id);
-        if (i === -1) {
+        const found = findItem(arr, item.id);
+        if (!found || !found.item) {
           liElem.replaceChild(textDiv, input);
           liElem.classList.remove('editing');
           return;
         }
-        arr[i].text = newVal.trim();
+        found.item.text = newVal.trim();
         saveData(arr, () => {
           render(arr);
         });
@@ -221,14 +286,14 @@
 
   function toggleCompleted(id, toCompleted) {
     loadData((arr) => {
-      const i = arr.findIndex(t => t.id === id);
-      if (i === -1) return;
+      const found = findItem(arr, id);
+      if (!found || !found.item) return;
       if (toCompleted) {
-        arr[i].completed = true;
-        arr[i].completedAt = Date.now();
+        found.item.completed = true;
+        found.item.completedAt = Date.now();
       } else {
-        arr[i].completed = false;
-        delete arr[i].completedAt;
+        found.item.completed = false;
+        delete found.item.completedAt;
       }
       saveData(arr, () => render(arr));
     });
@@ -236,8 +301,10 @@
 
   function deleteItem(id) {
     loadData((arr) => {
-      const updated = arr.filter(t => t.id !== id);
-      saveData(updated, () => render(updated));
+      const found = findItem(arr, id);
+      if (!found || !found.parentArray) return;
+      found.parentArray.splice(found.index, 1);
+      saveData(arr, () => render(arr));
     });
   }
 
@@ -249,13 +316,24 @@
       return;
     }
     loadData((arr) => {
-      const item = { id: makeId(), text: raw.trim(), completed: false, createdAt: Date.now() };
+      const item = { id: makeId(), text: raw.trim(), completed: false, createdAt: Date.now(), subtasks: [] };
       const updated = [item, ...arr];
       saveData(updated, () => {
         render(updated);
         els.input.value = '';
         els.input.focus();
       });
+    });
+  }
+
+  function addSubtask(parentId, text) {
+    loadData((arr) => {
+      const found = findItem(arr, parentId);
+      if (!found || !found.item) return;
+      if (!Array.isArray(found.item.subtasks)) found.item.subtasks = [];
+      const sub = { id: makeId(), text, completed: false, createdAt: Date.now(), subtasks: [] };
+      found.item.subtasks.push(sub);
+      saveData(arr, () => render(arr));
     });
   }
 
@@ -276,7 +354,7 @@
       } else {
         destIndex = parseInt(destEl.dataset.index, 10);
       }
-      const allEls = Array.from(els.list.querySelectorAll('.todo-item'));
+      const allEls = Array.from(els.list.querySelectorAll('.todo-item.root'));
       const targetIdx = computeDropIndex(e.clientY, allEls);
       if (isNaN(sourceIndex) || targetIdx < 0) {
         render(arr);
@@ -303,7 +381,7 @@
   }
 
   function getDragAfterElement(clientY) {
-    const draggableElements = [...els.list.querySelectorAll('.todo-item:not(.dragging)')];
+    const draggableElements = [...els.list.querySelectorAll('.todo-item.root:not(.dragging)')];
     let closest = null;
     let closestOffset = Number.NEGATIVE_INFINITY;
     for (const el of draggableElements) {
@@ -318,10 +396,8 @@
   }
 
   function setIndices() {
-    const items = els.list.querySelectorAll('.todo-item');
-    items.forEach((el, idx) => {
-      el.dataset.index = idx;
-    });
+    const items = els.list.querySelectorAll('.todo-item.root');
+    items.forEach((el, idx) => { el.dataset.index = idx; });
   }
 
   const originalRender = render;
