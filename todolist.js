@@ -17,6 +17,8 @@
 
   const isBlank = (s) => !s || s.trim().length === 0;
   const makeId = () => `${Date.now()}_${Math.floor(Math.random() * 1e6)}`;
+  let pendingEditId = null;
+  let pendingEditItem = null;
 
   function normalizeTasks(arr) {
     if (!Array.isArray(arr)) return [];
@@ -182,9 +184,7 @@
       addSubBtn.title = '小タスクを追加';
       addSubBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const raw = window.prompt('小タスクを入力してください');
-        if (!raw || isBlank(raw)) return;
-        addSubtask(item.id, raw.trim());
+        startAddSubtask(item.id);
       });
       controls.appendChild(addSubBtn);
     }
@@ -218,13 +218,14 @@
     return li;
   }
 
-  function enterEditMode(liElem, item) {
+  function enterEditMode(liElem, item, options = {}) {
     if (!liElem || !item) return;
     if (liElem.classList.contains('editing')) return;
     liElem.classList.add('editing');
 
     const textDiv = liElem.querySelector('.todo-text');
     const controlsDiv = liElem.querySelector('.controls');
+    const textParent = textDiv ? textDiv.parentNode : null;
 
     const input = document.createElement('input');
     input.type = 'text';
@@ -232,7 +233,9 @@
     input.value = item.text;
     input.setAttribute('aria-label', '編集');
 
-    liElem.replaceChild(input, textDiv);
+    if (textParent) {
+      textParent.replaceChild(input, textDiv);
+    }
 
     if (controlsDiv) controlsDiv.style.display = 'none';
 
@@ -242,20 +245,28 @@
       saved = true;
       if (controlsDiv) controlsDiv.style.display = '';
       if (!save) {
-        liElem.replaceChild(textDiv, input);
+        if (options.removeOnCancelIfBlank) {
+          deleteItem(item.id);
+          return;
+        }
+        if (textParent && textDiv) textParent.replaceChild(textDiv, input);
         liElem.classList.remove('editing');
         return;
       }
       const newVal = input.value;
       if (isBlank(newVal)) {
-        liElem.replaceChild(textDiv, input);
+        if (options.removeOnCancelIfBlank) {
+          deleteItem(item.id);
+          return;
+        }
+        if (textParent && textDiv) textParent.replaceChild(textDiv, input);
         liElem.classList.remove('editing');
         return;
       }
       loadData((arr) => {
         const found = findItem(arr, item.id);
         if (!found || !found.item) {
-          liElem.replaceChild(textDiv, input);
+          if (textParent && textDiv) textParent.replaceChild(textDiv, input);
           liElem.classList.remove('editing');
           return;
         }
@@ -337,6 +348,26 @@
     });
   }
 
+  function startAddSubtask(parentId) {
+    loadData((arr) => {
+      const found = findItem(arr, parentId);
+      if (!found || !found.item) return;
+      if (!Array.isArray(found.item.subtasks)) found.item.subtasks = [];
+      const blankExisting = found.item.subtasks.find(s => isBlank(s.text));
+      if (blankExisting) {
+        pendingEditId = blankExisting.id;
+        pendingEditItem = blankExisting;
+        render(arr);
+        return;
+      }
+      const sub = { id: makeId(), text: '', completed: false, createdAt: Date.now(), subtasks: [] };
+      found.item.subtasks.push(sub);
+      pendingEditId = sub.id;
+      pendingEditItem = sub;
+      saveData(arr, () => render(arr));
+    });
+  }
+
   els.list.addEventListener('dragover', (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -404,9 +435,21 @@
   function renderWithIndex(arr) {
     originalRender(arr);
     setIndices();
+    focusPendingEdit();
   }
 
   render = renderWithIndex;
+
+  function focusPendingEdit() {
+    if (!pendingEditId) return;
+    const li = els.list.querySelector(`[data-id="${pendingEditId}"]`);
+    if (li) {
+      const item = pendingEditItem || { id: pendingEditId, text: '' };
+      enterEditMode(li, item, { removeOnCancelIfBlank: true });
+    }
+    pendingEditId = null;
+    pendingEditItem = null;
+  }
 
   els.form.addEventListener('submit', (e) => {
     e.preventDefault();

@@ -54,12 +54,13 @@
   transition: background .12s, box-shadow .12s;
 }
 .todo-item.subtask {
-  background: #fafafa;
+  /* background: #fafafa; */
+  border: 0;
 }
 .todo-item:focus-within,
 .todo-item:hover {
   background: #fff;
-  box-shadow: 0 1px 6px rgba(0,0,0,.06);
+  /* box-shadow: 0 1px 6px rgba(0,0,0,.06); */
 }
 
 .item-row {
