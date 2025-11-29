@@ -279,6 +279,7 @@
     };
 
     const onKey = (e) => {
+      if (e.isComposing || e.keyCode === 229) return; // ignore IME composition commits
       if (e.key === 'Enter') {
         e.preventDefault();
         finish(true);
