@@ -88,37 +88,38 @@
   function renderTextArea(arr) {
     const grouped = { completed: {}, uncompleted: [] };
 
-    const collect = (list, prefix) => {
+    const collect = (list, depth) => {
       list.forEach((todo) => {
-        const label = prefix ? `${prefix} > ${todo.text}` : todo.text;
+        if (isBlank(todo.text)) return;
+        const indent = Math.max(0, depth);
         if (todo.completed) {
           const date = new Date(todo.completedAt).toISOString().slice(0, 10);
           if (!grouped.completed[date]) grouped.completed[date] = [];
-          grouped.completed[date].push(label);
+          grouped.completed[date].push({ text: todo.text, depth: indent });
         } else {
-          grouped.uncompleted.push(label);
+          grouped.uncompleted.push({ text: todo.text, depth: indent });
         }
         if (Array.isArray(todo.subtasks) && todo.subtasks.length) {
-          collect(todo.subtasks, label);
+          collect(todo.subtasks, indent + 1);
         }
       });
     };
 
-    collect(arr, '');
+    collect(arr, 0);
 
     const completedDates = Object.keys(grouped.completed).sort((a, b) => new Date(b) - new Date(a));
 
     let output = '=== 完了済み ===\n';
     for (const date of completedDates) {
       output += `\n${formatDateJP(date)}:\n`;
-      grouped.completed[date].forEach(text => {
-        output += `  - ${text}\n`;
+      grouped.completed[date].forEach(entry => {
+        output += `${'  '.repeat(entry.depth + 1)}- ${entry.text}\n`;
       });
     }
 
     output += '\n\n=== 未完了 ===\n\n';
-    grouped.uncompleted.forEach(text => {
-      output += `  - ${text}\n`;
+    grouped.uncompleted.forEach(entry => {
+      output += `${'  '.repeat(entry.depth + 1)}- ${entry.text}\n`;
     });
 
     els.textarea.value = output;
